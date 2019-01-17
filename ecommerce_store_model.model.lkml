@@ -17,3 +17,12 @@ explore: attribute {
     sql_on: ${p_a_c.attribute_id} = ${attribute.id} ;;
   }
 }
+
+
+explore: order_items {
+  join: products {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${order_items.product_id} = ${products.product_id} ;;
+  }
+}
