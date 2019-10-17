@@ -161,7 +161,16 @@ view: players_detail {
 
   dimension: value {
     type: number
-    sql: ${TABLE}.value ;;
+    sql: ${TABLE}.value/10 ;;
+    value_format: "\"£\"#.0\" K\""
+  }
+
+  dimension: vapm {
+    label: "VAPM"
+    description: "Value add per minutes ( (Points - 2) / Value )"
+    type: number
+    sql: (${total_points} - 2) / (${value} / 10) ;;
+    hidden: yes
   }
 
   dimension: was_home {
@@ -249,6 +258,14 @@ view: players_detail {
     sql: ${red_cards} ;;
   }
 
+  measure: average_vapm {
+    label: "Average VAPM"
+    description: "Value add per minutes ( (Points - 2) / Value )"
+    type: average
+    sql: ${vapm} ;;
+    value_format_name: decimal_4
+  }
+
   measure: total_saves {
     description: "How many saves the goalkeeper made"
     type: sum
@@ -270,22 +287,26 @@ view: players_detail {
   measure: total_threat {
     type: sum
     sql: ${threat} ;;
+    value_format_name: decimal_2
   }
 
   measure: total_ict_index {
     label: "Total ICT Index"
     type: sum
     sql: ${ict_index} ;;
+    value_format_name: decimal_2
   }
 
   measure: total_creativity {
     type: sum
     sql: ${creativity} ;;
+    value_format_name: decimal_2
   }
 
   measure: total_influence {
     type: sum
     sql: ${influence} ;;
+    value_format_name: decimal_2
   }
 
   measure: total_selected {
@@ -314,6 +335,16 @@ view: players_detail {
     sql: ${total_points} ;;
   }
 
+
+  measure: total_fantasy_points_against_top_6 {
+    type: sum
+    sql: ${total_points} ;;
+    filters: {
+      field: away_teams.away_name
+      value: "Man City, Liverpool, Spurs, Chelsea, Man Utd, Arsenal"
+  }
+  }
+
   measure: games_played {
     type: count
     filters: {
@@ -322,9 +353,26 @@ view: players_detail {
     }
   }
 
+  measure: games_played_against_top_6 {
+    type: count
+    filters: {
+      field: minutes
+      value: ">0"
+    }
+    filters: {
+      field: away_teams.away_name
+      value: "Man City, Liverpool, Spurs, Chelsea, Man Utd, Arsenal"
+    }
+  }
+
   measure: points_per_game {
     type: number
     sql: ${total_fantasy_points}/${games_played} ;;
+  }
+
+  measure: points_per_game_against_big_6 {
+    type: number
+    sql: ${total_fantasy_points_against_top_6}/${games_played_against_top_6} ;;
   }
 
   ##################################

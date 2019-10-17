@@ -64,6 +64,11 @@ view: players {
   dimension: name {
     type: string
     sql: concat(${first_name}, " ", ${second_name}) ;;
+    link: {
+      label: "Player Dashboard"
+      icon_url: "https://premierleague-static-files.s3.amazonaws.com/premierleague/photos/players/250x250/p{{code._value}}.png"
+      url: "/dashboards/646?Player={{value}}"
+    }
   }
 
   dimension: picture {
@@ -74,7 +79,8 @@ view: players {
 
   dimension: now_cost {
     type: number
-    sql: ${TABLE}.now_cost ;;
+    sql: ${TABLE}.now_cost /10 ;;
+    value_format: "\"£\"#.0\" K\""
   }
 
   dimension: points_per_game {

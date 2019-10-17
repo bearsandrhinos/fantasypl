@@ -3,12 +3,7 @@ connection: "fntsypl"
 include: "*.view.lkml"                       # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
-explore: players {
-  join: players_detail {
-    relationship: one_to_many
-    sql_on: ${players.id} = ${players_detail.element} ;;
-  }
-}
+explore: players {}
 
 # # Select the views that should be a part of this model,
 # # and define the joins that connect them together.

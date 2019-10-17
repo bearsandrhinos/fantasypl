@@ -11,9 +11,17 @@ explore: players_detail {
     sql_on: ${players.id} = ${players_detail.element} ;;
   }
   join: teams {
+
     relationship: many_to_one
     type: left_outer
     sql_on: ${players.team} = ${teams.id} ;;
+  }
+  join: away_teams {
+    view_label: "Teams"
+    fields: [away_teams.away_name]
+    relationship: many_to_one
+    type: left_outer
+    sql_on: ${players_detail.opponent_team} = ${away_teams.id} ;;
   }
   join: understat_mapping {
     fields: []

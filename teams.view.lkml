@@ -163,3 +163,18 @@ view: teams {
 
 
 }
+
+view: away_teams {
+  sql_table_name: fpl.teams ;;
+
+  dimension: away_name {
+    type: string
+    sql: ${TABLE}.name ;;
+  }
+
+  dimension: id {
+    type: number
+    sql: ${TABLE}.id ;;
+  }
+
+}
