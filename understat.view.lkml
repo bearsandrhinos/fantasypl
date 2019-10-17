@@ -96,4 +96,54 @@ view: understat {
     type: count
     drill_fields: [id, player_name, understat_mapping.count]
   }
+
+  measure: xg {
+    label: "xG"
+    description: "Expected Goals"
+    type: max
+    sql: ${x_g} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: xa {
+    label: "xA"
+    description: "Expected Assists"
+    type: max
+    sql: ${x_a} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: np_g {
+    label: "npG"
+    description: "Non Penalty Goals"
+    type: max
+    sql: ${npg} ;;
+    value_format_name: decimal_0
+  }
+
+  measure: np_xg {
+    label: "np xG"
+    description: "Non Penalty Expected Goals"
+    type: max
+    sql: ${npx_g} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: xgbuild {
+    label: "xG Buildup"
+    description: "Expected Goals from involvement in buildup"
+    type: max
+    sql: ${x_gbuildup} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: xgchain {
+    label: "xG Chain"
+    description: "I think this is a expected hockey assists"
+    type: max
+    sql: ${x_gchain} ;;
+    value_format_name: decimal_2
+  }
+
+
 }
