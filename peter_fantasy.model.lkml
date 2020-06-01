@@ -5,13 +5,16 @@ include: "*.view.lkml"                       # include all views in this project
 
 
 explore: players_detail {
+  query: test {
+    dimensions: [players.name]
+    measures: [players.total_points]
+  }
   join: players {
     relationship: many_to_one
     type: left_outer
     sql_on: ${players.id} = ${players_detail.element} ;;
   }
   join: teams {
-
     relationship: many_to_one
     type: left_outer
     sql_on: ${players.team} = ${teams.id} ;;
@@ -33,5 +36,9 @@ explore: players_detail {
     relationship: many_to_one
     type: left_outer
     sql_on: ${understat.id} = ${understat_mapping.understat_id} ;;
+  }
+  query: top_scorers {
+    dimensions: [players.name]
+    measures: [total_fantasy_points]
   }
 }

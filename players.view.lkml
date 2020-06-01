@@ -27,6 +27,7 @@ view: players {
     sql: ${TABLE}.code ;;
   }
 
+
   dimension: Position {
     type: string
     sql: CASE WHEN ${TABLE}.element_type = 1 THEN "GK"
@@ -67,7 +68,7 @@ view: players {
     link: {
       label: "Player Dashboard"
       icon_url: "https://premierleague-static-files.s3.amazonaws.com/premierleague/photos/players/250x250/p{{code._value}}.png"
-      url: "/dashboards/646?Player={{value}}"
+      url: "/dashboards-next/646?Player={{value}}"
     }
   }
 
@@ -114,10 +115,33 @@ view: players {
     sql: ${TABLE}.web_name ;;
   }
 
+  parameter: dynamic {
+    type: unquoted
+    allowed_value: {
+      label: "Name"
+      value: "name"
+    }
+    allowed_value: {
+      label: "Team"
+      value: "team"
+    }
+    allowed_value: {
+      label: "Position"
+      value: "element_type"
+    }
+  }
+
+  dimension: dynamic_dimension {
+    type: string
+    sql: ${TABLE}.{{ dynamic._parameter_value }} ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [id, name, web_name, name]
   }
+
+
 
   ####################################
   #
