@@ -5,14 +5,14 @@ include: "*.view.lkml"                       # include all views in this project
 
 
 explore: players_detail {
-  query: test {
-    dimensions: [players.name]
-    measures: [players.total_points]
-  }
   join: players {
     relationship: many_to_one
     type: left_outer
     sql_on: ${players.id} = ${players_detail.element} ;;
+  }
+  query: test {
+    dimensions: [players.name]
+    measures: [players.total_points]
   }
   join: teams {
     relationship: many_to_one
