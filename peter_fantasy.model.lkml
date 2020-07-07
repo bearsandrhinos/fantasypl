@@ -5,6 +5,7 @@ include: "*.view.lkml"                       # include all views in this project
 
 
 explore: players_detail {
+  sql_always_where: ${players.name} = {{ _user_attributes['brand_test'] }} ;;
   join: players {
     relationship: many_to_one
     type: left_outer
