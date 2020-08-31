@@ -1,5 +1,6 @@
 view: players_detail {
   sql_table_name: fpl.players_detail ;;
+  drill_fields: [fixture, total_fantasy_points]
 
   dimension: id {
     primary_key: yes
