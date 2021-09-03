@@ -1,10 +1,31 @@
 view: test_table {
   sql_table_name: `i-love-basketball.nba.test_table`
     ;;
+    #sql_table_name: `i-love-basketball.{{ test._parameter_value }}` ;;
+
+  parameter: test {
+    type: unquoted
+    allowed_value: {
+      label: "escape"
+      value: "nba.test_table"
+    }
+    allowed_value: {
+      label: "no escape"
+      value: "nba.test_1"
+    }
+  }
+
+  filter: test1 {
+
+    type: string
+    default_value: "this_is_a_test"
+    suggestions: ["another_suggest"]
+
+  }
 
   dimension: assists {
     type: number
-    sql: ${TABLE}.assists ;;
+    sql: ${TABLE}.{{test._parameter_value}} ;;
   }
 
   dimension: attempted_field_goals {

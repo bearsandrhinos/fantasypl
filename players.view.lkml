@@ -110,6 +110,11 @@ view: players {
     sql: ${TABLE}.total_points ;;
   }
 
+  measure: total_points_total {
+    type: sum
+    sql: ${total_points} ;;
+  }
+
   dimension: web_name {
     type: string
     sql: ${TABLE}.web_name ;;

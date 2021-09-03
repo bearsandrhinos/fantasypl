@@ -1,6 +1,32 @@
 view: players_detail {
-  sql_table_name: fpl.players_detail ;;
+   sql_table_name: fpl.players_detail ;;
+
   drill_fields: [fixture, total_fantasy_points]
+
+  parameter: reporting_duration {
+    type: unquoted
+    allowed_value: {
+      label: "Last 14 Days"
+      value: "last_14_days"
+    }
+    allowed_value: {
+      label: "Last 30 Days"
+      value: "last_30_days"
+    }
+    allowed_value: {
+      label: "Last 90 Days"
+      value: "last_90_days"
+    }
+    allowed_value: {
+      label: "All Days"
+      value: "all_days"
+    }
+  }
+
+  dimension: test_parameter_string {
+    type: string
+    sql: '{{ reporting_duration._parameter_value }}' ;;
+  }
 
   dimension: id {
     primary_key: yes
@@ -17,6 +43,7 @@ view: players_detail {
     type: number
     sql: ${TABLE}.bonus ;;
   }
+
 
   dimension: bps {
     type: number
@@ -114,6 +141,8 @@ view: players_detail {
     sql: ${TABLE}.round ;;
     html: Game Week {{value}} ;;
   }
+
+
 
   dimension: saves {
     type: number
@@ -334,6 +363,11 @@ view: players_detail {
   measure: total_fantasy_points {
     type: sum
     sql: ${total_points} ;;
+    drill_fields: [players.name, players.team, total_assists, total_goals]
+    link: {
+      label: "Drill with Totals"
+      url: "{{ link }}&total=on"
+    }
   }
 
 
@@ -366,14 +400,44 @@ view: players_detail {
     }
   }
 
+  filter: player_name {
+    suggest_dimension: players.name
+  }
+
+  dimension: filter {
+    type: yesno
+    sql: {% condition player_name %} ${players.name} {% endcondition %} ;;
+  }
+
   measure: points_per_game {
     type: number
     sql: ${total_fantasy_points}/${games_played} ;;
   }
 
+  measure: dynamic_total {
+    type: sum
+    sql: ${total_points} ;;
+    filters: [filter: "yes"]
+  }
+
+  measure: dynamic_games_played {
+    type: count
+    filters: [filter: "yes", minutes: ">0"]
+  }
+
+  measure: dynamic_choice {
+    type: number
+    sql: ${dynamic_total}/${dynamic_games_played} ;;
+  }
+
   measure: points_per_game_against_big_6 {
     type: number
     sql: ${total_fantasy_points_against_top_6}/${games_played_against_top_6} ;;
+  }
+
+  measure: current_game_week {
+    type: max
+    sql: ${round} ;;
   }
 
   ##################################

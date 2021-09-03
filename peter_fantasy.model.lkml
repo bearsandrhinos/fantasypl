@@ -1,6 +1,7 @@
 connection: "fntsypl"
 
-include: "*.view.lkml"                       # include all views in this project
+include: "*.view.lkml"
+# include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
 
@@ -37,8 +38,29 @@ explore: players_detail {
     type: left_outer
     sql_on: ${understat.id} = ${understat_mapping.understat_id} ;;
   }
+
+  join: player_fact {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${players.name} = ${player_fact.name} ;;
+  }
+
   query: top_scorers {
     dimensions: [players.name]
     measures: [total_fantasy_points]
   }
+
+  query: total_points {
+    dimensions: [round]
+    measures: [total_fantasy_points]
+    filters: [players.name: "Michail Antonio"]
+  }
 }
+
+explore: players {}
+
+explore: fixtures {}
+
+explore: fixture_table {}
+
+explore: teams {}

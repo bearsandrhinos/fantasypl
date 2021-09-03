@@ -1,4 +1,3 @@
-explore: teams {}
 view: teams {
   sql_table_name: fpl.teams ;;
 
