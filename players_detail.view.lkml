@@ -28,6 +28,28 @@ view: players_detail {
     sql: '{{ reporting_duration._parameter_value }}' ;;
   }
 
+  parameter: position_selector {
+    type: unquoted
+    default_value: "FWD"
+    allowed_value: {
+      label: "FWD"
+      value: "FWD"
+    }
+    allowed_value: {
+      label: "GK"
+      value: "GK"
+    }
+    allowed_value: {
+      label: "MID"
+      value: "MID"
+    }
+    allowed_value: {
+      label: "DEF"
+      value: "DEF"
+    }
+  }
+
+
   dimension: id {
     primary_key: yes
     type: number
@@ -438,6 +460,58 @@ view: players_detail {
   measure: current_game_week {
     type: max
     sql: ${round} ;;
+  }
+
+  measure: dynamic_selector1 {
+    label: "{% if position_selector._parameter_value == 'FWD' %}
+            Total Goals
+          {% elsif position_selector._parameter_value == 'MID' %}
+            Total Assists
+          {% elsif position_selector._parameter_value == 'DEF' %}
+            Total Clean Sheets
+          {% elsif position_selector._parameter_value == 'GK' %}
+            Total Clean Sheets
+          {% else %}
+            Total Fantasy Points
+          {% endif %}"
+    type: number
+    sql: {% if position_selector._parameter_value == 'FWD' %}
+          ${total_goals}
+          {% elsif position_selector._parameter_value == 'MID' %}
+            ${total_assists}
+          {% elsif position_selector._parameter_value == 'DEF' %}
+            ${total_clean_sheets}
+          {% elsif position_selector._parameter_value == 'GK' %}
+            ${total_clean_sheets}
+          {% else %}
+            ${total_fantasy_points}
+          {% endif %};;
+  }
+
+  measure: dynamic_selector2 {
+    label: "{% if position_selector._parameter_value == 'FWD' %}
+    Total Assists
+    {% elsif position_selector._parameter_value == 'MID' %}
+    Total Goals
+    {% elsif position_selector._parameter_value == 'DEF' %}
+    Total Assists
+    {% elsif position_selector._parameter_value == 'GK' %}
+    Total Saves
+    {% else %}
+    Total Bonus
+    {% endif %}"
+    type: number
+    sql: {% if position_selector._parameter_value == 'FWD' %}
+          ${total_assists}
+          {% elsif position_selector._parameter_value == 'MID' %}
+            ${total_goals}
+          {% elsif position_selector._parameter_value == 'DEF' %}
+            ${total_assists}
+          {% elsif position_selector._parameter_value == 'GK' %}
+            ${total_saves}
+          {% else %}
+            ${total_bonus}
+          {% endif %};;
   }
 
   ##################################
