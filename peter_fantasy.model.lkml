@@ -39,10 +39,10 @@ explore: players_detail {
     sql_on: ${understat.id} = ${understat_mapping.understat_id} ;;
   }
 
-  join: player_fact {
+  join: parameter_player {
     type: left_outer
     relationship: one_to_one
-    sql_on: ${players.name} = ${player_fact.name} ;;
+    sql_on: ${players.name} = ${parameter_player.name} ;;
   }
 
   query: top_scorers {

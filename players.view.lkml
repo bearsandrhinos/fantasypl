@@ -72,6 +72,18 @@ view: players {
     }
   }
 
+#   dimension: filtered_on_dimension {
+#     hidden: yes
+#     type: yesno
+#     sql: ${Position} = '{{ players_detail.position_selector._parameter_value }}' ;;
+# }
+
+# dimension: name_by_position {
+#   type: string
+#   sql: CASE WHEN ${Position} = '{{ players_detail.position_selector._parameter_value }}' THEN ${name}
+#         ELSE null end ;;
+# }
+
   dimension: picture {
     type: number
     sql: ${code} ;;

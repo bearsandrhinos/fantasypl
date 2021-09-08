@@ -45,3 +45,46 @@ view: player_fact {
       type: number
     }
   }
+
+  view: parameter_player {
+    derived_table: {
+      sql:
+          SELECT
+    players.code  AS `players.code`,
+    concat(players.first_name, " ", players.second_name)  AS `players.name`,
+    CASE WHEN players.element_type = 1 THEN "GK"
+              WHEN players.element_type = 2 THEN "DEF"
+              WHEN players.element_type = 3 THEN "MID"
+              WHEN players.element_type = 4 THEN "FWD" END  AS `players.Position`
+FROM fpl.players_detail  AS players_detail
+LEFT JOIN fpl.players  AS players ON players.id = players_detail.element
+WHERE (CASE WHEN players.element_type = 1 THEN "GK"
+              WHEN players.element_type = 2 THEN "DEF"
+              WHEN players.element_type = 3 THEN "MID"
+              WHEN players.element_type = 4 THEN "FWD" END ) = '{{ players_detail.position_selector._parameter_value }}'
+GROUP BY
+    1,
+    2,
+    3 ;;
+    }
+
+    measure: count {
+      type: count
+
+    }
+
+    dimension: players_code {
+      type: number
+      sql: ${TABLE}.`players.code` ;;
+    }
+
+    dimension: name {
+      type: string
+      sql: ${TABLE}.`players.name` ;;
+    }
+
+    dimension: players_position {
+      type: string
+      sql: ${TABLE}.`players.Position` ;;
+    }
+  }

@@ -50,6 +50,7 @@ view: players_detail {
   }
 
 
+
   dimension: id {
     primary_key: yes
     type: number
@@ -463,6 +464,7 @@ view: players_detail {
   }
 
   measure: dynamic_selector1 {
+    group_label: "dynamic"
     label: "{% if position_selector._parameter_value == 'FWD' %}
             Total Goals
           {% elsif position_selector._parameter_value == 'MID' %}
@@ -489,6 +491,7 @@ view: players_detail {
   }
 
   measure: dynamic_selector2 {
+    group_label: "dynamic"
     label: "{% if position_selector._parameter_value == 'FWD' %}
     Total Assists
     {% elsif position_selector._parameter_value == 'MID' %}
